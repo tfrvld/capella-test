@@ -1,6 +1,23 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import bg from "@/src/img/background.png";
+import logo from "@/src/img/cmd-logo.png";
+import Image from "next/image";
+import { Inter, Viga } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const viga = Viga({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-viga",
+  display: "swap",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +40,24 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body
+        className={`${inter.variable} ${viga.variable} font-sans antialiased min-h-full flex flex-col`}
+      >
+        <div
+          className="w-full h-screen bg-cover bg-center"
+          style={{ backgroundImage: `url(${bg.src})` }}
+        >
+          <div className="pl-[50px] pt-[10px]">
+            <Image
+              src={logo}
+              width={120}
+              height={120}
+              alt="Picture of the author"
+            />
+          </div>
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
