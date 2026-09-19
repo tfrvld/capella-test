@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Capella Multidana - Sistem Pengajuan Kredit
 
-## Getting Started
+Prototype internal tool untuk mencatat pengajuan kredit nasabah, melihat daftar pengajuan, dan mengubah status pengajuan (approve/reject). Dibuat sebagai bagian dari coding test IT Department PT Capella Multidana.
 
-First, run the development server:
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Styling**: Tailwind CSS
+- **Database**: PostgreSQL (hosted di [Neon](https://neon.tech))
+- **ORM**: Drizzle ORM
+- **UI Feedback**: SweetAlert2
+
+## Fitur
+
+- Mencatat pengajuan kredit nasabah melalui form dengan kalkulasi cicilan real-time
+- Melihat daftar pengajuan dalam bentuk tabel, dengan pencarian dan pagination
+- Mengubah status pengajuan (Approve/Reject) melalui dialog konfirmasi
+- Melihat detail pengajuan lengkap dengan kalkulasi cicilan per bulan
+- Validasi bisnis:
+  - Pendapatan bulanan nasabah minimal Rp1.000.000 untuk dapat mengajukan pinjaman
+  - Nominal pengajuan maksimal Rp200.000.000
+  - Tenor maksimal 24 bulan
+  - Status yang sudah ditetapkan (approve/reject) tidak dapat diubah kembali
+
+## Cara Menjalankan Project
+
+### 1. Clone repository
+
+```bash
+git clone <url-repository-ini>
+cd capella-multidana-test-trifahmi
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Konfigurasi environment variable
+
+Buat file `.env` di root project (contoh tersedia di `.env.example`), isi dengan connection string PostgreSQL Anda:
+
+```
+DATABASE_URL="postgresql://user:password@host/dbname?sslmode=require"
+```
+
+> Project ini dikembangkan menggunakan database Postgres gratis dari [Neon](https://neon.tech). Anda bisa membuat database sendiri di sana, atau menghubungi kandidat untuk connection string yang sudah berisi data contoh.
+
+### 4. Jalankan migrasi database
+
+```bash
+npx drizzle-kit push
+```
+
+Perintah ini akan membuat tabel `nasabah` dan `pengajuan` sesuai skema di `src/db/schema.ts`.
+
+### 5. Jalankan development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000) di browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Struktur Folder
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/
+  page.tsx              # Halaman utama (tabel daftar pengajuan)
+  add/page.tsx          # Halaman tambah pengajuan kredit
+  api/
+    pengajuan/
+      route.ts          # POST — tambah pengajuan baru
+      [id]/route.ts     # PATCH — ubah status approve/reject
+components/
+  PagePengajuan.tsx     # Wrapper client (state pencarian + tabel)
+  ui/
+    Table.tsx           # Tabel daftar pengajuan
+    SearchBar.tsx        # Search bar + navigasi
+    PopUpDetail.tsx      # Popup detail pengajuan
+src/
+  db/
+    schema.ts           # Skema database Drizzle
+  index.ts              # Koneksi database (Neon + Drizzle)
+lib/
+  cicilan.ts             # Helper kalkulasi cicilan & format Rupiah
+interface/
+  data.ts                # TypeScript interface (Nasabah, Pengajuan)
+```
 
-## Learn More
+## Kalkulasi Cicilan
 
-To learn more about Next.js, take a look at the following resources:
+Cicilan per bulan dihitung menggunakan skema bunga flat 12%/tahun:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+bunga = nominal × 12% × (tenor / 12)
+cicilan per bulan = (nominal + bunga) / tenor
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+> Skema bunga tidak ditentukan secara eksplisit di spesifikasi coding test, sehingga 12%/tahun flat digunakan sebagai asumsi kerja dan dapat disesuaikan di `lib/cicilan.ts`.
 
-## Deploy on Vercel
+## Catatan Pengembangan
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Approve/reject tidak bisa diubah kembali setelah ditetapkan (dicek di sisi UI; disarankan menambahkan pengecekan yang sama di level query untuk pengamanan tambahan)
+- Validasi pembatasan maksimal 3 pengajuan per nasabah belum diimplementasikan pada versi ini
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Kontak
+
+Trifahmi Rivaldo (TFRVLD)
