@@ -52,17 +52,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         className={`${inter.variable} ${viga.variable} antialiased min-h-full flex flex-col`}
       >
         <div
-          className="min-w-full h-screen bg-cover bg-center font-inter overflow-scroll py-10"
+          className="min-w-full h-screen bg-cover bg-center font-inter overflow-scroll"
           style={{ backgroundImage: `url(${bg.src})` }}
         >
           <div className="pl-[50px] pt-[10px] flex items-end">
             <Image
               src={logo}
-              width={120}
-              height={120}
+              // width={120}
+              // height={120}
               alt="Picture of the author"
+              className="w-[75px] h-[50px] md:w-[95px] md:h-[70px]"
             />
-            <h1 className="font-viga text-[40px] mb-[-10px] font-bold text-gray-900">
+            <h1 className="font-viga text-[20px] md:text-[35px] mb-[-5px] md:mb-[-10px] font-bold text-gray-900">
               CAPELLA MULTIDANA
             </h1>
           </div>

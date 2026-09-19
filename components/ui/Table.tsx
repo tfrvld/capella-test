@@ -66,7 +66,7 @@ export default function Table({ searchTerm, data }: TableProps) {
         Swal.fire({
           title: "Reject",
           text: "Pengajuan berhasil ditolak.",
-          icon: "error",
+          icon: "success",
         });
         router.refresh();
       }
@@ -141,26 +141,37 @@ export default function Table({ searchTerm, data }: TableProps) {
                     {item.status}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-center space-x-1">
-                  <button
-                    className="rounded cursor-pointer bg-gray-300 hover:bg-emerald-500 px-1 py-1 text-xs text-white transition-all"
-                    onClick={() => handleApprove(item.idPengajuan)}
-                  >
-                    <Check className="w-5 h-5" />
-                  </button>
-                  <button
-                    className="rounded cursor-pointer bg-gray-300 hover:bg-rose-500 px-1 py-1 text-xs text-white transition-all"
-                    onClick={() => handleReject(item.idPengajuan)}
-                  >
-                    <XCircle className="w-5 h-5" />
-                  </button>
-                  <button
-                    className="rounded cursor-pointer bg-gray-300 hover:bg-sky-500 px-1 py-1 text-xs text-white transition-all"
-                    onClick={() => setSelectedItem(item)}
-                  >
-                    <Info className="w-5 h-5" />
-                  </button>
-                </td>
+                {item.status == "pending" ? (
+                  <td className="px-4 py-3 text-center space-x-1">
+                    <button
+                      className="rounded cursor-pointer bg-gray-300 hover:bg-emerald-500 px-1 py-1 text-xs text-white transition-all"
+                      onClick={() => handleApprove(item.idPengajuan)}
+                    >
+                      <Check className="w-5 h-5" />
+                    </button>
+                    <button
+                      className="rounded cursor-pointer bg-gray-300 hover:bg-rose-500 px-1 py-1 text-xs text-white transition-all"
+                      onClick={() => handleReject(item.idPengajuan)}
+                    >
+                      <XCircle className="w-5 h-5" />
+                    </button>
+                    <button
+                      className="rounded cursor-pointer bg-gray-300 hover:bg-sky-500 px-1 py-1 text-xs text-white transition-all"
+                      onClick={() => setSelectedItem(item)}
+                    >
+                      <Info className="w-5 h-5" />
+                    </button>
+                  </td>
+                ) : (
+                  <td className="px-4 py-3 text-center space-x-1">
+                    <button
+                      className="rounded cursor-pointer bg-gray-300 hover:bg-sky-500 px-1 py-1 text-xs text-white transition-all"
+                      onClick={() => setSelectedItem(item)}
+                    >
+                      <Info className="w-5 h-5" />
+                    </button>
+                  </td>
+                )}
               </tr>
             ))
           ) : (
@@ -183,6 +194,7 @@ export default function Table({ searchTerm, data }: TableProps) {
           <button
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
+            suppressHydrationWarning
             className="rounded border border-gray-200 px-3 py-1 text-xs hover:bg-gray-100 disabled:opacity-40 transition-all"
           >
             Sebelumnya
@@ -205,6 +217,7 @@ export default function Table({ searchTerm, data }: TableProps) {
           <button
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages || totalPages === 0}
+            suppressHydrationWarning
             className="rounded border border-gray-200 px-3 py-1 text-xs hover:bg-gray-100 disabled:opacity-40 transition-all"
           >
             Selanjutnya

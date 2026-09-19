@@ -7,9 +7,12 @@ import {
   text,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import { createId } from "@paralleldrive/cuid2";
 
 export const nasabah = pgTable("nasabah", {
-  idNasabah: varchar("id_nasabah", { length: 255 }).primaryKey(),
+  idNasabah: varchar("id_nasabah", { length: 255 })
+    .primaryKey()
+    .$defaultFn(() => createId()),
   nama: varchar("nama", { length: 255 }).notNull(),
   nomorTelepon: varchar("nomor_telepon", { length: 50 }).notNull(),
   pendapatanBulanan: decimal("pendapatan_bulanan", {
@@ -19,7 +22,9 @@ export const nasabah = pgTable("nasabah", {
 });
 
 export const pengajuan = pgTable("pengajuan", {
-  idPengajuan: varchar("id_pengajuan", { length: 255 }).primaryKey(),
+  idPengajuan: varchar("id_pengajuan", { length: 255 })
+    .primaryKey()
+    .$defaultFn(() => createId()),
   idNasabah: varchar("id_nasabah", { length: 255 })
     .notNull()
     .references(() => nasabah.idNasabah, { onDelete: "cascade" }),
