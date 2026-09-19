@@ -5,6 +5,7 @@ import bg from "@/src/img/background.png";
 import logo from "@/src/img/cmd-logo.png";
 import Image from "next/image";
 import { Inter, Viga } from "next/font/google";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -38,22 +39,32 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={cn(
+        "h-full",
+        "antialiased",
+        geistSans.variable,
+        geistMono.variable,
+        "font-sans",
+        inter.variable,
+      )}
     >
       <body
-        className={`${inter.variable} ${viga.variable} font-sans antialiased min-h-full flex flex-col`}
+        className={`${inter.variable} ${viga.variable} antialiased min-h-full flex flex-col`}
       >
         <div
-          className="w-full h-screen bg-cover bg-center"
+          className="w-full h-screen bg-cover bg-center font-inter"
           style={{ backgroundImage: `url(${bg.src})` }}
         >
-          <div className="pl-[50px] pt-[10px]">
+          <div className="pl-[50px] pt-[10px] flex items-end">
             <Image
               src={logo}
               width={120}
               height={120}
               alt="Picture of the author"
             />
+            <h1 className="font-viga text-[40px] mb-[-10px] font-bold text-gray-900">
+              CAPELLA MULTIDANA
+            </h1>
           </div>
           {children}
         </div>
