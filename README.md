@@ -27,7 +27,7 @@ Prototype internal tool untuk mencatat pengajuan kredit nasabah, melihat daftar 
 ### 1. Clone repository
 
 ```bash
-git clone <url-repository-ini>
+git clone https://github.com/tfrvld/capella-test
 cd capella-multidana-test-trifahmi
 ```
 
@@ -39,11 +39,12 @@ npm install
 
 ### 3. Konfigurasi environment variable
 
-Buat file `.env` di root project (contoh tersedia di `.env.example`), isi dengan connection string PostgreSQL Anda:
+Buat file `.env` di root project (contoh tersedia di `.env.example`), isi dengan connection string PostgreSQL dibawah ini jika `.env` tidak ada:
 
 ```
-DATABASE_URL="postgresql://user:password@host/dbname?sslmode=require"
+DATABASE_URL="postgresql://neondb_owner:npg_6IXvn5ZpiMgV@ep-jolly-king-b4umbdi9-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 ```
+*key ini saya share karna tidak mengandung data pribadi dan ini project untuk testing
 
 > Project ini dikembangkan menggunakan database Postgres gratis dari [Neon](https://neon.tech). Anda bisa membuat database sendiri di sana, atau menghubungi kandidat untuk connection string yang sudah berisi data contoh.
 
