@@ -14,17 +14,17 @@ interface TableProps {
 const SearchBar = ({ searchTerm, setSearchTerm }: TableProps) => {
   // const [searchTerm, setSearchTerm] = useState("");
   return (
-    <div className="px-10 flex justify-between">
+    <div className="px-10 flex justify-between flex-col sm:flex-row items-center gap-2">
       <div className="flex gap-3">
         <div className="bg-main py-2 px-3 rounded-[10px]">
           <p className="text-black font-medium">Pengajuan Nasabah</p>
         </div>
-        <div className="bg-main py-2 px-2 rounded-[10px]">
+        <div className="cursor-pointer bg-main py-2 px-2 rounded-[10px] transition hover:-translate-y-0.5 shadow-black hover:shadow hover:outline hover:outline-black">
           <Plus />
         </div>
       </div>
       <div className="flex gap-3">
-        <div className="bg-[#fff]/50 border-2 border-main py-2 px-3 rounded-[10px] flex justify-between w-[300px]">
+        <div className="bg-[#fff]/50 border-2 border-main py-2 px-3 rounded-[10px] flex justify-between w-[20vw]">
           <input
             type="text"
             placeholder="Search..."

@@ -52,7 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         className={`${inter.variable} ${viga.variable} antialiased min-h-full flex flex-col`}
       >
         <div
-          className="w-full h-screen bg-cover bg-center font-inter"
+          className="min-w-full h-screen bg-cover bg-center font-inter overflow-scroll py-10"
           style={{ backgroundImage: `url(${bg.src})` }}
         >
           <div className="pl-[50px] pt-[10px] flex items-end">

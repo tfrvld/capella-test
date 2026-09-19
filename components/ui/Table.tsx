@@ -10,12 +10,15 @@ import Check from "@/src/svg/check";
 import XCircle from "@/src/svg/x-circle";
 import Info from "@/src/svg/info-circle";
 
+import PopUpDetail from "@/components/ui/PopUpDetail";
+
 interface TableProps {
   searchTerm: string;
   data: Pengajuan[];
 }
 
 export default function Table({ searchTerm, data }: TableProps) {
+  const [selectedItem, setSelectedItem] = useState<Pengajuan | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
   const router = useRouter();
@@ -30,17 +33,18 @@ export default function Table({ searchTerm, data }: TableProps) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, Approve!",
     }).then(async (result) => {
-      if (result.isConfirmed)
+      if (result.isConfirmed) {
         await fetch(`/api/pengajuan/${id}`, {
           method: "PATCH",
           body: JSON.stringify({ status: "approve" }),
         });
-      Swal.fire({
-        title: "Approve",
-        text: "Pengajuan berhasil disetujui.",
-        icon: "success",
-      });
-      router.refresh();
+        Swal.fire({
+          title: "Approve",
+          text: "Pengajuan berhasil disetujui.",
+          icon: "success",
+        });
+        router.refresh();
+      }
     });
   };
 
@@ -54,17 +58,18 @@ export default function Table({ searchTerm, data }: TableProps) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, Reject!",
     }).then(async (result) => {
-      if (result.isConfirmed)
+      if (result.isConfirmed) {
         await fetch(`/api/pengajuan/${id}`, {
           method: "PATCH",
-          body: JSON.stringify({ status: "Reject" }),
+          body: JSON.stringify({ status: "reject" }),
         });
-      Swal.fire({
-        title: "Reject",
-        text: "Pengajuan berhasil ditolak.",
-        icon: "error",
-      });
-      router.refresh();
+        Swal.fire({
+          title: "Reject",
+          text: "Pengajuan berhasil ditolak.",
+          icon: "error",
+        });
+        router.refresh();
+      }
     });
   };
 
@@ -83,7 +88,13 @@ export default function Table({ searchTerm, data }: TableProps) {
   const currentData = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <div className="w-full overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+    <div className="w-full overflow-x-auto rounded-xl border border-gray-200 bg-[#fcfcfc] shadow-sm">
+      {selectedItem && (
+        <PopUpDetail
+          data={selectedItem}
+          onClose={() => setSelectedItem(null)}
+        />
+      )}
       <table className="w-full text-left text-sm text-gray-600">
         <thead className="bg-[#FFC043]/20 text-xs text-gray-800 uppercase">
           <tr>
@@ -132,18 +143,21 @@ export default function Table({ searchTerm, data }: TableProps) {
                 </td>
                 <td className="px-4 py-3 text-center space-x-1">
                   <button
-                    className="rounded bg-gray-300 hover:bg-emerald-500 px-1 py-1 text-xs text-white transition-all"
+                    className="rounded cursor-pointer bg-gray-300 hover:bg-emerald-500 px-1 py-1 text-xs text-white transition-all"
                     onClick={() => handleApprove(item.idPengajuan)}
                   >
                     <Check className="w-5 h-5" />
                   </button>
                   <button
-                    className="rounded bg-gray-300 hover:bg-rose-500 px-1 py-1 text-xs text-white transition-all"
+                    className="rounded cursor-pointer bg-gray-300 hover:bg-rose-500 px-1 py-1 text-xs text-white transition-all"
                     onClick={() => handleReject(item.idPengajuan)}
                   >
                     <XCircle className="w-5 h-5" />
                   </button>
-                  <button className="rounded bg-gray-300 hover:bg-sky-500 px-1 py-1 text-xs text-white transition-all">
+                  <button
+                    className="rounded cursor-pointer bg-gray-300 hover:bg-sky-500 px-1 py-1 text-xs text-white transition-all"
+                    onClick={() => setSelectedItem(item)}
+                  >
                     <Info className="w-5 h-5" />
                   </button>
                 </td>
